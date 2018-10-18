@@ -1,26 +1,40 @@
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import React, { Component } from 'react';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 
-console.log('createStore, applyMiddleware, compose, combineReducers, Provider', createStore, applyMiddleware, compose, combineReducers, Provider);
+import { Platform, StyleSheet, Text, View, TouchableOpacity, YellowBox } from 'react-native';
 
-const instructions = Platform.select({
-	ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-	android:
-		'Double tap R on your keyboard to reload,\n' +
-		'Shake or press menu button for dev menu',
-});
+YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader', 'Remote debugger']);
 
 type Props = {};
 export default class App extends Component<Props> {
+	state = {
+		count: 0,
+	}
+	
+	changeCount(arg) {
+		console.log('arg, this', arg, this);
+		const { count } = this.state;
+		
+		this.setState({
+			count: count + arg,
+		});
+	}
+	
 	render() {
-		return (
-			<View style={styles.container}>
-				<Text style={styles.welcome}>Uniquite Serge</Text>
-				<Text style={styles.welcome}>Debug it in http://localhost:8081/debugger-ui/ with ctrl+m 'Debug JS Remotely'</Text>
-			</View>
-		);
+		const { count } = this.state;
+		
+		return  <View style={styles.container}>
+			<TouchableOpacity onPress={() => this.changeCount.bind(this)(1)}>
+				<Text>+</Text>
+			</TouchableOpacity>
+			
+			<Text style={styles.welcome}>{count}</Text>
+				
+			<TouchableOpacity onPress={() => this.changeCount.bind(this)(-1)}>
+				<Text>-</Text>
+			</TouchableOpacity>
+		</View>
 	}
 }
 
